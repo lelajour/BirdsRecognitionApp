@@ -15,16 +15,19 @@
       "fallbackToCacheTimeout": 0
     },
     "assetBundlePatterns": [
-      "**/*"
+      "**/*",
+      "ios.bundleIdentifier"
     ],
     "ios": {
+      "bundleIdentifier": "com.test.test",
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.test.test"
     },
     "web": {
       "favicon": "./assets/favicon.png"
