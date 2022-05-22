@@ -1,55 +1,40 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
-import MakeClient from '../Supabase/SupabaseClient';
-import GetBirdsList from '../Supabase/GetBirdsList';
+import { Client } from '../Supabase/SupabaseClient';
+import { LibraryDisplay } from './LibraryDisplay/LibraryDisplay';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useState } from 'react';
+import { BirdDetails } from './BirdComponent/BirdDetails/BirdDetails';
 
 
 const BirdsLibrary = ({ navigation }) => {
-  let alpha = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
-  const client = MakeClient();
-  const birdsList = GetBirdsList(client);
+  const client = new Client();
+  const Stack = createNativeStackNavigator();
+  const [birds, setbirds] = useState({list: [], Loading: true});
 
-  return (
-    <ScrollView>
-        <View style={styles.libcontainer}>
-            {alpha.map(r =>
-                <View key={r} style={styles.libalpha}>
-                    <Text style={{color:"gray"}}> {r} </Text>
-                    <View style={styles.separator}/>
-                    <View style={styles.elem}>
-                        <Text>Test</Text>
-                        <Text>Test</Text>
-                    </View>
-                </View>
-        )}
-    </View>
-    </ScrollView>
-);
+  if (birds.Loading === true) {
+      client.GetBirds().then(res => {
+          setbirds({...this.birds, list: res, Loading: false});
+          console.log(res);
+      }).catch(err => {
+          console.log(err);
+      });
+  }
+
+  if (birds.Loading === false) {
+    return (
+        <Stack.Navigator
+            initialRouteName="Library"
+            screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="Library" component={LibraryDisplay} initialParams={{'birds': birds.list}} />
+                <Stack.Screen name="BirdDetails" component={BirdDetails} />
+        </Stack.Navigator>
+    );
+  }
+  else {
+    return (
+       null
+    );
+  }
 }
 
-const styles = StyleSheet.create({
-    libcontainer: {
-        flex: 1,
-        backgroundColor: '#fff',
-        padding:10,
-    },
-
-    libalpha: {
-        marginTop:10,
-    },
-
-    elem: {
-        paddingLeft: 25,
-        padding: 10,
-        paddingBottom: 0,
-        backgroundColor: "#fff",
-    },
-    separator: {
-        borderBottomColor: 'gray',
-        borderBottomWidth: 1,
-        margin: 5,
-        // marginRight: 10
-    }
-
-});
 
 export {BirdsLibrary};

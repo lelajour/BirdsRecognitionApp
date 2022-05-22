@@ -4,8 +4,7 @@ import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { StyleSheet, SafeAreaView } from 'react-native';
-
-console.log(BirdsLibrary);
+import 'react-native-url-polyfill/auto';
 
 export default function App() {
   const Tab = createBottomTabNavigator();
