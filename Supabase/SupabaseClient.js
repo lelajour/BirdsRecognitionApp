@@ -1,27 +1,42 @@
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { AsyncStorage } from '@react-native-async-storage/async-storage';
+import {API_KEY, API_URL} from '@env';
 
 
-class Client {
+class ClientSupabase {
     constructor() {
         this.client = createClient(
-            'https://xvamxlyulavfmjaapmsb.supabase.co',
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh2YW14bHl1bGF2Zm1qYWFwbXNiIiwicm9sZSI6ImFub24iLCJpYXQiOjE2NTMwOTY1MjEsImV4cCI6MTk2ODY3MjUyMX0.3juJzcpiDkCsDqCHH05nO5N1ATeU04EV7XNeUnRbEeg',
+            API_URL,
+            API_KEY,
             {localStorage: AsyncStorage, detectSessionInUrl: false});
     }
 
    async GetBirds() {
-        const fetchBirds = async () => {
-            const {data, error} = await this.client.from('Birds').select('name');
+        const {data, error} = await this
+            .client
+            .from('Birds')
+            .select('name');
 
-            if (error) {
-                console.log(error);
-            }
-            return data;
+        if (error) {
+            console.log(error);
         }
-        let ret = fetchBirds();
-        return ret
+        return data;
+    }
+
+    async GetBirdDetails(name) {
+        const { data, error } = await this
+            .client
+            .from('Birds')
+            .select('*')
+            .eq('name', name)
+
+        if (error) {
+            console.log(error);
+        }
+        return data;
     }
 }
 
-export { Client };
+const Client = new ClientSupabase();
+
+export default Client;

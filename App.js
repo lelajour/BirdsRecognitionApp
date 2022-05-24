@@ -13,11 +13,12 @@ export default function App() {
         <NavigationContainer style={styles.navcontainer}>
             <Tab.Navigator
                 screenOptions={({ route }) => ({
+                    headerShown: false,
                     tabBarLabelStyle: styles.tabBarLabelStyle,
                     tabBarIcon: ({ focused, color, size }) => {
                         let iconName;
 
-                        if (route.name === 'Birds Library') {
+                        if (route.name === 'MainBibliothèque') {
                             iconName = focused
                                 ? 'md-library-sharp'
                                 : 'md-library-outline';
@@ -25,7 +26,7 @@ export default function App() {
                             iconName = focused ? 'record-circle' : 'record-circle-outline';
                         }
 
-                        if (route.name === 'Birds Library') {
+                        if (route.name === 'MainBibliothèque') {
                             return <Ionicons name={iconName} size={size} color={color} />;
                         } else if (route.name === 'Birds Record') {
                             return <MaterialCommunityIcons name={iconName} size={size} color={color} />
@@ -36,7 +37,7 @@ export default function App() {
                     // tabBarShowLabel: false,
                 })} >
                 <Tab.Screen
-                    name="Birds Library"
+                    name="MainBibliothèque"
                     component={BirdsLibrary} />
                 <Tab.Screen
                     name="Birds Record"

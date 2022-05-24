@@ -1,19 +1,18 @@
-import { Client } from '../Supabase/SupabaseClient';
+import Client from '../Supabase/SupabaseClient';
 import { LibraryDisplay } from './LibraryDisplay/LibraryDisplay';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { useState } from 'react';
-import { BirdDetails } from './BirdComponent/BirdDetails/BirdDetails';
+import { View } from 'react-native';
+import { BirdDetails } from './BirdDetails/BirdDetails';
 
 
 const BirdsLibrary = ({ navigation }) => {
-  const client = new Client();
   const Stack = createNativeStackNavigator();
   const [birds, setbirds] = useState({list: [], Loading: true});
 
   if (birds.Loading === true) {
-      client.GetBirds().then(res => {
+      Client.GetBirds().then(res => {
           setbirds({...this.birds, list: res, Loading: false});
-          console.log(res);
       }).catch(err => {
           console.log(err);
       });
@@ -21,19 +20,15 @@ const BirdsLibrary = ({ navigation }) => {
 
   if (birds.Loading === false) {
     return (
-        <Stack.Navigator
-            initialRouteName="Library"
-            screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Library" component={LibraryDisplay} initialParams={{'birds': birds.list}} />
+        <Stack.Navigator initialRouteName="Bibliothèque">
+                <Stack.Screen name="Bibliothèque" component={LibraryDisplay} initialParams={{birds: birds.list}} />
                 <Stack.Screen name="BirdDetails" component={BirdDetails} />
         </Stack.Navigator>
     );
   }
-  else {
-    return (
-       null
-    );
-  }
+  return (
+      <View style={{width: "100%",height: "100%", backgroundColor: "#fff"}}/>
+  );
 }
 
 
